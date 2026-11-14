@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:04,000
+On the way to Mars, Earth is up to 22 minutes away.
+
+2
+00:00:04,000 --> 00:00:09,000
+AstroVitals: a personal flight surgeon for every astronaut.
+
+3
+00:00:09,000 --> 00:00:15,000
+A one-minute daily check-in of 10 health indicators.
+
+4
+00:00:15,000 --> 00:00:19,000
+Color-coded status and a clear action to take now.
+
+5
+00:00:19,000 --> 00:00:23,000
+Early warning: it detects drift from your own baseline.
+
+6
+00:00:23,000 --> 00:00:26,000
+Quests keep crews exercising and sleeping well.
+
+7
+00:00:26,000 --> 00:00:30,000
+Works offline in English, French and Arabic. Team Beni Mellal, Morocco.
