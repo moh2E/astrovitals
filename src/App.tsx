@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceArea, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceArea, ReferenceLine, CartesianGrid } from 'recharts';
 import { ui, type Lang, type UIKey } from './i18n';
 import { missions, indicators, indicatorById, systems, symptoms, hazards, quests, reminders } from './data';
 import type { IndicatorId, Status, SystemId, SymptomId } from './data';
 import { BodyMap } from './BodyMap';
 import {
-  type Reading, demoHistory, systemStatus, indicatorStatus, healthScore, alerts, boneLoss, cumulativeDose, xpFor, toCsv,
+  type Reading, type Drift, demoHistory, driftWarnings, systemStatus, indicatorStatus, healthScore, alerts, boneLoss, cumulativeDose, xpFor, toCsv,
 } from './engine';
 
 type Tab = 'dashboard' | 'checkin' | 'trends' | 'tasks' | 'learn';
@@ -22,6 +22,27 @@ function load(): Saved {
 }
 
 const statusIcon: Record<Status, string> = { green: '●', yellow: '▲', red: '■', none: '○' };
+
+function interpolate(text: string, values: Record<string, string | number>) {
+  return text.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key]));
+}
+
+function driftTitle(drift: Drift, lang: Lang) {
+  const indicator = indicatorById[drift.id];
+  return interpolate(ui.driftTitle[lang], {
+    indicator: indicator.name[lang],
+    direction: ui[drift.direction === 'up' ? 'driftUp' : 'driftDown'][lang],
+  });
+}
+
+function driftMessage(drift: Drift, lang: Lang) {
+  return interpolate(ui.driftMessage[lang], {
+    recent: drift.recent,
+    baseline: drift.baseline,
+    z: drift.z,
+    unit: indicatorById[drift.id].unit,
+  });
+}
 
 export default function App() {
   const [state, setState] = useState<Saved>(load);
@@ -45,6 +66,7 @@ export default function App() {
   const statuses = Object.fromEntries(systems.map(s => [s.id, systemStatus(latest, s.id, day, mission)])) as Record<SystemId, Status>;
   const score = healthScore(latest, day, mission);
   const al = alerts(latest, day, mission, history);
+  const drifts = driftWarnings(history);
   const dose = cumulativeDose(history);
   const game = xpFor(history);
 
@@ -115,9 +137,15 @@ export default function App() {
 
             <section className="card">
               <h2>⚠️ {t('alerts')}</h2>
-              {al.length === 0 && <p className="ok">{t('noAlerts')}</p>}
+              {al.length === 0 && drifts.length === 0 && <p className="ok">{t('noAlerts')}</p>}
               <ul className="alerts">
                 {al.map(a => <AlertItem key={a.kind + a.id} a={a} latest={latest} lang={lang} t={t} dose={dose} bone={boneLoss(day, mission)} />)}
+                {drifts.map(drift => (
+                  <li key={`drift-${drift.id}`} className="alert yellow">
+                    <b>{drift.direction === 'up' ? '📈' : '📉'} {driftTitle(drift, lang)}</b>
+                    <span>{driftMessage(drift, lang)}</span>
+                  </li>
+                ))}
               </ul>
               {al.some(a => a.status === 'red') && (
                 <div className="surgeon">
@@ -327,6 +355,7 @@ function CheckIn({ lang, t, last, onSave, missionDays }: { lang: Lang; t: TFn; l
 
 function Trends({ history, lang, t }: { history: Reading[]; lang: Lang; t: TFn }) {
   const [sel, setSel] = useState<IndicatorId[]>(['heartRate', 'systolic', 'sleep', 'mood']);
+  const drifts = driftWarnings(history);
   return (
     <div>
       <div className="chips trend-picks">
@@ -338,6 +367,7 @@ function Trends({ history, lang, t }: { history: Reading[]; lang: Lang; t: TFn }
       <div className="grid charts">
         {sel.map(id => {
           const ind = indicatorById[id];
+          const drift = drifts.find(d => d.id === id);
           const data = history.map(r => ({ day: r.day, v: r.values[id] }));
           const vs = data.map(d => d.v);
           const lo = Math.min(ind.greenBand[0], ...vs), hi = Math.max(ind.greenBand[1], ...vs);
@@ -345,11 +375,18 @@ function Trends({ history, lang, t }: { history: Reading[]; lang: Lang; t: TFn }
           return (
             <section key={id} className="card chart">
               <h3>{ind.name[lang]} <small className="muted">({ind.unit})</small></h3>
+              {drift && (
+                <div className="drift-banner alert yellow">
+                  <b>{drift.direction === 'up' ? '📈' : '📉'} {driftTitle(drift, lang)}</b>
+                  <span>{driftMessage(drift, lang)}</span>
+                </div>
+              )}
               <div dir="ltr" style={{ width: '100%', height: 200 }}>
                 <ResponsiveContainer>
                   <LineChart data={data} margin={{ top: 5, right: 10, bottom: 0, left: -15 }}>
                     <CartesianGrid stroke="#1e293b" />
                     <ReferenceArea y1={ind.greenBand[0]} y2={ind.greenBand[1]} fill="#22c55e" fillOpacity={0.12} />
+                    {drift && <ReferenceLine y={drift.baseline} stroke="#facc15" strokeDasharray="5 5" label={{ value: t('baseline'), fill: '#fde047', fontSize: 11, position: 'insideTopRight' }} />}
                     <XAxis dataKey="day" stroke="#94a3b8" fontSize={11} />
                     <YAxis domain={[+(lo - pad).toFixed(1), +(hi + pad).toFixed(1)]} stroke="#94a3b8" fontSize={11} />
                     <Tooltip contentStyle={{ background: '#0f172a', border: '1px solid #334155' }} labelFormatter={d => `${t('missionDay')} ${d}`} formatter={(v: number) => [`${v} ${ind.unit}`, ind.name[lang]]} />

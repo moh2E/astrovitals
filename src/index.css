@@ -64,6 +64,8 @@ button.pill { cursor: pointer; }
 .alert.yellow { background: #42200633; border-color: #facc15; }
 .alert.red { background: #450a0a55; border-color: #ef4444; }
 .alert span { color: #cbd5e1; }
+.drift-banner { margin-bottom: 10px; }
+.drift-banner.alert { padding: 7px 10px; font-size: 11.5px; }
 .ok { color: #4ade80; }
 .surgeon { margin-top: 14px; }
 .autonomy { font-size: 12.5px; color: #fdba74; background: #43140733; padding: 8px; border-radius: 8px; }

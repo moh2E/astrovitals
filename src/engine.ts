@@ -7,9 +7,37 @@ export interface Reading {
   symptoms: SymptomId[];
 }
 
+export interface Drift { id: IndicatorId; direction: 'up' | 'down'; recent: number; baseline: number; z: number }
+
 const rank: Record<Status, number> = { none: -1, green: 0, yellow: 1, red: 2 };
 export const worst = (list: Status[]): Status =>
   list.reduce<Status>((a, b) => (rank[b] > rank[a] ? b : a), 'none');
+
+export function driftWarnings(history: Reading[]): Drift[] {
+  if (history.length < 17) return [];
+  const baselineReadings = history.slice(-17, -3);
+  const recentReadings = history.slice(-3);
+  const out: Drift[] = [];
+  for (const ind of indicators) {
+    if (ind.id === 'radiation') continue;
+    const baselineValues = baselineReadings.map(r => r.values[ind.id]);
+    const baselineMean = baselineValues.reduce((sum, value) => sum + value, 0) / baselineValues.length;
+    const variance = baselineValues.reduce((sum, value) => sum + (value - baselineMean) ** 2, 0) / (baselineValues.length - 1);
+    const sd = Math.max(Math.sqrt(variance), indicatorById[ind.id].step);
+    const recent = recentReadings.reduce((sum, r) => sum + r.values[ind.id], 0) / recentReadings.length;
+    const z = (recent - baselineMean) / sd;
+    if (Math.abs(z) >= 2) {
+      out.push({
+        id: ind.id,
+        direction: z > 0 ? 'up' : 'down',
+        recent: +recent.toFixed(1),
+        baseline: +baselineMean.toFixed(1),
+        z: +z.toFixed(1),
+      });
+    }
+  }
+  return out.sort((a, b) => Math.abs(b.z) - Math.abs(a.z));
+}
 
 export const indicatorStatus = (r: Reading | undefined, id: IndicatorId): Status =>
   r ? indicatorById[id].evaluate(r.values[id]) : 'none';
@@ -80,6 +108,12 @@ export function demoHistory(missionId: string, days = 45): Reading[] {
       water: +Math.max(0.8, n(2.4 - 0.5 * t, 0.25)).toFixed(1),
       radiation: +(flare ? m.radPerDay * 9 : n(m.radPerDay, m.radPerDay * 0.08)).toFixed(2),
     };
+    if (missionId === 'transit') {
+      if (d > days - 17 && d <= days - 3) values.systolic = Math.max(117, Math.min(124, values.systolic));
+      if (d === days - 2) values.systolic = 125;
+      if (d === days - 1) values.systolic = 127;
+      if (d === days) values.systolic = 129;
+    }
     const sym: SymptomId[] = [];
     if (d <= 3) sym.push('dizziness');
     if (d === 22) sym.push('rash');
