@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: 1280px 720px; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Inter','Segoe UI','Noto Sans',sans-serif; color: #e2e8f0; }
+.s { width: 1280px; height: 720px; padding: 56px 64px; position: relative; overflow: hidden; page-break-after: always;
+     background: radial-gradient(ellipse at top, #0b1d3a 0%, #030712 70%); }
+.s::after { content: attr(data-n) ' / 7'; position: absolute; right: 32px; bottom: 22px; color: #475569; font-size: 14px; }
+.foot { position: absolute; left: 64px; bottom: 22px; color: #475569; font-size: 14px; }
+h1 { font-size: 84px; margin: 0; letter-spacing: 1px; }
+h2 { font-size: 42px; margin: 0 0 8px; }
+.k { color: #38bdf8; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 16px; margin-bottom: 10px; }
+.sub { font-size: 30px; color: #94a3b8; margin: 14px 0 40px; }
+.logo { width: 110px; height: 110px; border-radius: 30px; display: grid; place-items: center; font-weight: 800; font-size: 46px;
+        background: linear-gradient(135deg,#0ea5e9,#6366f1); box-shadow: 0 0 60px #38bdf866; margin-bottom: 28px; }
+.row { display: flex; gap: 36px; align-items: flex-start; }
+.col { flex: 1; }
+ul { margin: 18px 0 0; padding-left: 26px; font-size: 22px; line-height: 1.45; }
+li { margin-bottom: 10px; }
+b.g { color: #4ade80; } b.y { color: #facc15; } b.r { color: #f87171; } b.c { color: #38bdf8; }
+img.shot { border-radius: 14px; border: 1px solid #1e293b; box-shadow: 0 20px 60px #000a; display: block; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 70px; }
+.stat { background: #0f172acc; border: 1px solid #1e293b; border-radius: 16px; padding: 30px 22px; }
+.stat .v { font-size: 44px; font-weight: 800; color: #38bdf8; }
+.stat .l { font-size: 17px; color: #94a3b8; margin-top: 6px; line-height: 1.35; }
+table { border-collapse: collapse; font-size: 22px; margin-top: 30px !important; width: 100%; margin-top: 14px; }
+td, th { border-bottom: 1px solid #1e293b; padding: 16px 12px; text-align: left; }
+th { color: #94a3b8; font-weight: 600; }
+.flow { display: flex; gap: 14px; align-items: center; margin: 22px 0 26px; }
+.step { background: #0f172acc; border: 1px solid #1e293b; border-radius: 14px; padding: 14px 16px; font-size: 18px; flex: 1; text-align: center; }
+.arrow { color: #38bdf8; font-size: 28px; }
+.pill { display: inline-block; padding: 5px 14px; border-radius: 999px; background: #0ea5e922; border: 1px solid #0ea5e966; color: #7dd3fc; font-size: 17px; margin: 4px 6px 0 0; }
+</style></head><body>
+
+<section class="s" data-n="1">
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%">
+    <div class="logo">AV</div>
+    <h1>AstroVitals</h1>
+    <div class="sub">Your personal flight surgeon, wherever you fly</div>
+    <div style="font-size:22px;color:#cbd5e1">NASA Space Apps Challenge 2026 · <b class="c">Create Health Monitoring Software for Astronauts on Space Missions</b></div>
+    <div style="font-size:22px;color:#94a3b8;margin-top:10px">Team Beni Mellal, Morocco</div>
+  </div>
+</section>
+
+<section class="s" data-n="2">
+  <div class="k">The problem</div>
+  <h2>On the way to Mars, the doctor is 22 minutes away</h2>
+  <div style="font-size:22px;color:#cbd5e1;max-width:1050px">Space changes the body every day, and crews on deep-space missions must spot health problems and act on their own.</div>
+  <div class="stats">
+    <div class="stat"><div class="v">3–22 min</div><div class="l">one-way signal delay between Mars and Earth</div></div>
+    <div class="stat"><div class="v">1–1.5%</div><div class="l">hip bone density lost per month in microgravity</div></div>
+    <div class="stat"><div class="v">~1.8 mSv</div><div class="l">radiation dose per day in Mars transit (MSL RAD)</div></div>
+    <div class="stat"><div class="v">5</div><div class="l">hazards of human spaceflight studied by NASA HRP</div></div>
+  </div>
+  <div style="font-size:22px;color:#94a3b8;margin-top:60px">Radiation · Isolation &amp; confinement · Distance from Earth · Gravity fields · Hostile/closed environments</div>
+  <div class="foot">Sources: NASA Human Research Program, NASA-STD-3001, Zeitlin et al. Science 2013</div>
+</section>
+
+<section class="s" data-n="3">
+  <div class="row">
+    <div style="width:390px">
+      <div class="k">Our solution</div>
+      <h2>One screen, clear status, clear action</h2>
+      <ul>
+        <li>Tap the <b class="c">body map</b>: 8 body systems, each <b class="g">green</b> / <b class="y">yellow</b> / <b class="r">red</b></li>
+        <li><b class="c">Health score</b>, radiation dose vs the 600 mSv career limit, bone-loss estimate</li>
+        <li><b class="c">Alerts with actions</b> and a report to the flight surgeon</li>
+        <li>Far from Earth: <b class="c">on-board protocol first</b></li>
+      </ul>
+    </div>
+    <div class="col"><img class="shot" src="c_1_dashboard.png" style="width:740px;margin-top:16px"></div>
+  </div>
+</section>
+
+<section class="s" data-n="4">
+  <div class="k">How it works</div>
+  <h2>A one-minute daily check-in</h2>
+  <div class="flow">
+    <div class="step">📝 10 indicators<br>+ 6 symptoms</div><div class="arrow">→</div>
+    <div class="step">⚙️ Rules per indicator<br>green / yellow / red</div><div class="arrow">→</div>
+    <div class="step">🫀 8 body systems<br>+ mission risks</div><div class="arrow">→</div>
+    <div class="step">✅ Score, alerts<br>and what to do now</div>
+  </div>
+  <div class="row">
+    <div class="col"><img class="shot" src="c_2_checkin.png" style="width:720px"></div>
+    <div style="width:380px;font-size:20px;line-height:1.5;color:#cbd5e1">
+      Heart rate, blood pressure, SpO₂, blood sugar, temperature, sleep, mood, exercise, water, radiation dose.<br><br>
+      Each indicator shows <b class="c">how to measure it</b> and the <b class="c">action</b> to take for its status.
+    </div>
+  </div>
+</section>
+
+<section class="s" data-n="5">
+  <div class="row">
+    <div style="width:400px">
+      <div class="k">What makes it different</div>
+      <h2>Early warning from your own baseline</h2>
+      <ul>
+        <li>Compares the last 3 days with the astronaut's <b class="c">own 14-day baseline</b></li>
+        <li>Warns when a value drifts (z ≥ 2) <b class="y">even if it is still in range</b></li>
+        <li>Catches problems <b class="c">before they turn red</b></li>
+        <li>Trend charts with the safe zone shaded</li>
+      </ul>
+    </div>
+    <div class="col"><img class="shot" src="c_3_trends.png" style="width:720px;margin-top:16px"></div>
+  </div>
+</section>
+
+<section class="s" data-n="6">
+  <div class="k">Science behind it</div>
+  <h2>The model adapts to each mission</h2>
+  <table>
+    <tr><th>Mission</th><th>Gravity</th><th>Radiation / day</th><th>Signal delay</th><th>Impact in the app</th></tr>
+    <tr><td>Space Station (LEO)</td><td>0 g</td><td>0.5 mSv</td><td>&lt; 1 s</td><td>Full bone-loss rate, ground support</td></tr>
+    <tr><td>Artemis Moon base</td><td>0.17 g</td><td>1.37 mSv</td><td>1.3 s</td><td>Reduced bone loss, higher dose</td></tr>
+    <tr><td>Mars transit</td><td>0 g</td><td>1.8 mSv</td><td>3–22 min</td><td>Highest dose, crew autonomy</td></tr>
+    <tr><td>Mars surface</td><td>0.38 g</td><td>0.64 mSv</td><td>3–22 min</td><td>Partial gravity, crew autonomy</td></tr>
+  </table>
+  <div style="font-size:20px;color:#cbd5e1;margin-top:26px">Health quests (resistance exercise, sleep, hydration) with XP, streaks and badges keep crews motivated during months of isolation.</div>
+  <div class="foot">NASA HRP hazards &amp; risks · NASA-STD-3001 (600 mSv) · MSL RAD (Zeitlin 2013) · Chang'e-4 LND (Zhang 2020) · CSA radiation health</div>
+</section>
+
+<section class="s" data-n="7">
+  <div class="row">
+    <div style="width:430px">
+      <div class="k">Impact &amp; next steps</div>
+      <h2>Built for every crew</h2>
+      <ul>
+        <li><b class="c">English, French, Arabic</b> with full right-to-left support</li>
+        <li><b class="c">Offline</b>, data stays on the device, CSV export</li>
+        <li>On Earth too: remote Atlas villages, ships, polar stations</li>
+        <li>Next: wearables, physician-validated thresholds, crew dashboard</li>
+      </ul>
+      <div style="margin-top:24px"><span class="pill">React + TypeScript</span><span class="pill">Recharts</span><span class="pill">SVG body map</span></div>
+    </div>
+    <div class="col"><img class="shot" src="c_6_arabic.png" style="width:700px;margin-top:16px"></div>
+  </div>
+  <div class="foot">Prototype, not a medical device · Team Beni Mellal, Morocco</div>
+</section>
+</body></html>
