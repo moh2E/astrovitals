@@ -46,6 +46,6 @@ npx vite build -c vite.single.config.ts
 
 We used an AI coding assistant to speed up writing code, generating demo data and drafting translations. The team defined the concept, selected the indicators and thresholds, reviewed and tested every feature.
 
-Live demo: _coming soon_
+Live demo: https://moh2e.github.io/astrovitals/
 
 Prototype for NASA Space Apps 2026. Not a medical device.
