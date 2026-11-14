@@ -115,7 +115,7 @@ Explain every file you create so the team understands it.
 "The thresholds come from public medical ranges and NASA-STD-3001. The hazards come from NASA HRP. The demo uses simulated data because real astronaut medical data is private. In a real mission it would connect to wearables (smartwatch, pulse oximeter)."
 
 **Q3. How do you calculate the health score?**
-"Each indicator is green, yellow or red. Green gives full points, yellow loses some, red loses more. We also subtract for symptoms, high radiation dose and bone loss. The result is a score from 0 to 100." (الكود: `healthScore` فـ `engine.ts`)
+"We group the indicators into 8 body systems. Each system is green, yellow or red (symptoms, bone loss and radiation dose can raise it). Green = 100 points, yellow = 60, red = 15. The score is the average of the 8 systems, from 0 to 100." (الكود: `healthScore` فـ `engine.ts`)
 
 **Q4. How do you estimate bone loss?**
 "In microgravity astronauts lose about 1 to 1.5% of hip bone density per month. We multiply by the mission days and by (1 − gravity). On the Moon (0.16 g) it's less, on Mars (0.38 g) less again."
